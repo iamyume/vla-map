@@ -12,8 +12,6 @@ module.exports = function(eleventyConfig) {
   // Passthrough
   eleventyConfig.addPassthroughCopy({
     "src/static": ".",
-    "node_modules/leaflet/dist/leaflet.js": "assets/lib/leaflet/leaflet.js",
-    "node_modules/leaflet/dist/leaflet.css": "assets/lib/leaflet/leaflet.css",
   });
 
   // Watch targets
@@ -23,6 +21,35 @@ module.exports = function(eleventyConfig) {
   if (process.env.GITHUB_REPOSITORY) {
     pathPrefix = process.env.GITHUB_REPOSITORY.split('/')[1];
   }
+
+  // Custom Collections
+  eleventyConfig.addCollection("storymapPathSorted", function(collectionApi) {
+    return collectionApi.getFilteredByTag('storymap').sort(function(a, b) {
+      return a.inputPath.localeCompare(b.inputPath); // sort by path - ascending
+    });
+  });
+  
+  // Filters
+  eleventyConfig.addFilter("collectionToStoryMapData", function(value) {
+    const slides = value.map(o => {
+      const data = o.data;
+      console.log(o.templateContent);
+      return {
+        type: data.type,
+        text: {
+          headline: data.title,
+          text: o.templateContent,
+        },
+        media: data.media,
+        location: data.location,
+      };
+    });
+    return JSON.stringify({
+      storymap: {
+        slides,
+      }
+    });
+  });
 
   return {
     dir: {

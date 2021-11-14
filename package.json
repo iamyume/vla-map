@@ -11,7 +11,7 @@
     "build:postcss": "cross-env NODE_ENV=production postcss src/styles/*.css --dir _site",
     "clean": "rimraf _site"
   },
-  "devDependencies": {
+  "dependencies": {
     "@11ty/eleventy": "^0.12.1",
     "@tailwindcss/typography": "^0.4.1",
     "autoprefixer": "^10.4.0",
@@ -24,8 +24,5 @@
     "postcss-nested": "^5.0.6",
     "rimraf": "^3.0.2",
     "tailwindcss": "^2.2.19"
-  },
-  "dependencies": {
-    "leaflet": "^1.7.1"
   }
 }
